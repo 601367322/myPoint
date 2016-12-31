@@ -1,0 +1,54 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+a {
+    color: #00B7FF;
+}
+
+#content {
+    padding-top: 12px;
+    flex: 1 0 auto;
+}
+
+nav {
+    background-color: #26a69a;
+}
+
+nav .brand-logo {
+    font-size: 1.5rem;
+}
+
+footer.page-footer {
+    background-color: #26a69a;
+}
+
+#toast-container {
+    top: 0px !important;
+    bottom: auto !important;
+}
+
+.toast {
+    min-height: 56px;
+    margin-top: 0px;
+}
+
+.errorToast {
+    background-color: red;
+}
+
+.padding_content {
+    padding: 0 0.75rem;
+}
+
+.padding_button {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 20px;
+}
+
+.match_parent_width {
+    width: 100%;
+}

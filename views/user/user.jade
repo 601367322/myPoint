@@ -1,0 +1,34 @@
+extends ../layout
+
+block head
+    - var title = user.nickname;
+    link(href='/stylesheets/user.css' rel='stylesheet')
+    script(src='/javascripts/countup.js')
+block content
+    div(class="padding_content")
+        img(src="#{user.avatar}" class="circle")
+
+        //h5 我的积分
+        //p(id="points")
+        //script.
+        //    var numAnim = new CountUp("points", 0, 100);
+        //    numAnim.start();
+        //h5 我的小组
+        //p
+        //    div(class="chip") 健身小组
+        //    div(class="chip") 练字小组
+        //    div(class="chip") Model Thinking
+        //div(class="padding_button")
+        //    button(class="btn-large waves-effect waves-light" id="createGroupBtn") 创建小组
+        //    script.
+        //        $("#createGroupBtn").click(function () {
+        //            window.location.href = "/group/create";
+        //            return false;
+        //        });
+        div(class="padding_button")
+            button(class="btn-large waves-effect waves-light red" id="exitBtn") 退出
+            script.
+                $("#exitBtn").click(function () {
+                    window.location.href = "/users/exit";
+                    return false;
+                });

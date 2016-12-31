@@ -1,0 +1,66 @@
+extends ../layout
+
+block head
+    - var title = "创建小组"
+    link(href='/stylesheets/group.css' rel="stylesheet")
+
+block content
+    div(class="row")
+        form(action="/group/create" method="post")
+            div(class="input-field col s12")
+                input(id="groupName" type="text" name="groupName" class="validate")
+                label(for="groupName") 小组名称
+            div(class="input-field col s12")
+                textarea(id="groupDes" name="groupDes" class="materialize-textarea")
+                label(for="groupDes") 小组宣言
+            div(class="padding_button" id="property_div")
+            div(class="padding_button")
+                a(class="modal-trigger waves-effect waves-light btn match_parent_width" href="#modal1") 添加任务属性
+                    i(class="material-icons right") add
+            //div(class="padding_button")
+            //    div(class="switch")
+            //        label(class="flow-text") 开启组员评价系统
+            //            input(type="checkbox")
+            //            span(class="lever")
+
+            div(id="modal1" class="modal bottom-sheet")
+                div(class="modal-content")
+                    input(type="radio" name="property_type" id="ck_text" value="0")
+                    label(for="ck_text") 文本
+                    input(type="radio" name="property_type" id="ck_image" value="1")
+                    label(for="ck_image" id="ck_image_label") 图片
+                    div(class="input-field" id="property_name_input-field")
+                        input(type="text" name="property_name" id="property_name")
+                        label(for="property_name") 属性显示名称（如：运动记录）
+                    a(class="waves-effect waves-light btn modal-close" id="add_property_complete") 完成
+                        i(class="material-icons right") done
+                    a(class="waves-effect waves-light btn right red modal-close") 取消
+                        i(class="material-icons right") close
+                script.
+                    $(document).ready(function () {
+                        $('.modal').modal();
+                    });
+                    $('#add_property_complete').click(function () {
+                        var icon;
+                        var checkVal = $("input[name='property_type']:checked").val();
+                        if (checkVal == 0) {
+                            icon = $('<img />', {
+                                src: '/images/ic_title_black_48dp_2x.png'
+                            });
+                        } else {
+                            icon = $('<img />', {
+                                src: '/images/ic_image_black_48dp_2x.png'
+                            });
+                        }
+                        var close = $('<i />', {
+                            text: 'close',
+                            'class': 'close material-icons'
+                        });
+                        var property = $('<div />', {
+                            'class': 'chip'
+                        });
+                        property.append(icon);
+                        property.append($('#property_name').val())
+                        property.append(close);
+                        $('#property_div').append(property);
+                    });

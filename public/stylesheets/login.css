@@ -1,0 +1,7 @@
+#loginBtn, #regBtn {
+    width: 100%;
+}
+
+#regBtn {
+    background-color: #ffab00;
+}

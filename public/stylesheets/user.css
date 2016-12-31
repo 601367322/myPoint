@@ -1,0 +1,13 @@
+#exitBtn {
+    width: 100%;
+}
+
+#createGroupBtn {
+    width: 100%;
+}
+
+#points {
+    font-size: 44px;
+    text-align: center;
+    font-weight: bold;
+}

@@ -1,0 +1,25 @@
+extends ../layout
+
+block head
+    - var title = "登录"
+    link(rel="stylesheet" href="/stylesheets/login.css")
+block nav_menu
+block content
+    div(class="row")
+        form(action="/users/login" method="post")
+            div(class="input-field col s12")
+                input( id="mobile" type="text" name="mobile" class="validate")
+                label(for="mobile") 手机号
+            div(class="input-field col s12")
+                input( id="password" type="password" name="password" class="validate")
+                label(for="password") 密码
+            div(class="padding_button")
+                button(class="btn-large waves-effect waves-light" type="submit" name="action" id="loginBtn") 登录
+            div(class="padding_button")
+                button(class="btn-large waves-effect waves-light" id="regBtn") 注册
+                script.
+                    $("#regBtn").click(function () {
+                        window.location.href = "/users/register";
+                        return false;
+                    });
+

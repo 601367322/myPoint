@@ -1,0 +1,28 @@
+doctype html
+html
+    head
+        link(href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
+        link(rel='stylesheet',href='/stylesheets/materialize.css')
+        script(src='/javascripts/jquery-3.1.1.min.js')
+        script(src='/javascripts/materialize.js')
+        meta(name='viewport' content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0")
+        link(rel='stylesheet', href='/stylesheets/style.css')
+
+        block head
+
+        title= title
+    body
+        if error != null
+            script.
+                Materialize.toast("!{error.result}", 3000, "errorToast");
+        div(class="navbar-fixed")
+            nav
+                div(class="nav-wrapper")
+                    a(href="#" class="brand-logo") #{title}
+                    block nav_menu
+        div(id="content")
+            block content
+        footer(class="page-footer")
+            div(class="footer-copyright")
+                div(class="container") Powered by Sen
+                    a(class="grey-text text-lighten-4 right") 腾跃智汇员工内部系统
