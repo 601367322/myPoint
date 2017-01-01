@@ -6,8 +6,21 @@ block head
     link(rel="stylesheet" href="/stylesheets/login.css")
 block nav_menu
 block content
+    script.
+        function checkForm(form) {
+            if (form.mobile.value == "") {
+                Materialize.toast("请输入手机号", 3000, "errorToast");
+                form.mobile.focus();
+                return false;
+            }
+            if (form.password.value == "") {
+                Materialize.toast("请输入密码", 3000, "errorToast");
+                form.password.focus();
+                return false;
+            }
+        }
     div(class="row top_margin")
-        form(action="/users/login" method="post")
+        form(action="/users/login" method="post" onsubmit="return checkForm(this);")
             div(class="input-field col s12")
                 input( id="mobile" type="text" name="mobile" class="validate")
                 label(for="mobile") 手机号

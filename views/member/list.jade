@@ -13,9 +13,17 @@ block content
                         span(class="title vertical-align-middle nickname") #{member.nickname}
                         if user.level >= 1
                             if member.eatMember
-                                a(class="secondary-content waves-effect waves-light btn red" style="margin-top:7px;" href="javascript:addEatMember('#{member._id}');") 删除
+                                a(class="secondary-content waves-effect waves-light btn red" style="margin-top:7px;" href="javascript:void(0)" onclick="javascript:changeEatMember(this,'#{member._id}');") 删除
                             else
-                                a(class="secondary-content waves-effect waves-light btn" style="margin-top:7px;" href="javascript:addEatMember('#{member._id}');") 添加
+                                a(class="secondary-content waves-effect waves-light btn" style="margin-top:7px;" href="javascript:void(0)" onclick="javascript:changeEatMember(this,'#{member._id}');") 添加
+                            div(class="secondary-content preloader-wrapper small active" style="margin-top:7px; display:none;")
+                                div(class="spinner-layer spinner-green-only")
+                                    div(class="circle-clipper left")
+                                        div(class="circle")
+                                    div(class="gap-patch")
+                                        div(class="circle")
+                                    div(class="circle-clipper right")
+                                        div(class="circle")
                         else if user.level == 8888
                             a(class='secondary-content dropdown-button btn' href='#' style="margin-top:7px;" data-activates='dropdown1') 管理
                             ul(id='dropdown1' class='dropdown-content')
@@ -28,19 +36,41 @@ block content
                                 li
                                     a(href="#!") three
     script.
-        function addEatMember(userId) {
+        function changeEatMember(btn, userId) {
+            var url = '/eatmanage/add';
+            if ($(btn).hasClass("red")) {
+                url = '/eatmanage/remove';
+            }
             $.ajax({
-                url:'/manage/add',
-                type:'post',
-                async:true,
-                data:{
-                    userId:userId,
+                url: url,
+                type: 'post',
+                async: true,
+                data: {
+                    userId: userId,
                 },
-                success:function (data) {
-                    alert(data);
+                beforeSend:function () {
+                    $(btn).next().show();
+                    $(btn).hide();
                 },
-                error:function (err) {
-                    alert(err);
+                success: function (data) {
+                    switch (data.errCode) {
+                        case 0:
+                            if ($(btn).hasClass("red")) {
+                                $(btn).removeClass("red");
+                                $(btn).text("添加");
+                            } else {
+                                $(btn).addClass("red");
+                                $(btn).text("删除");
+                            }
+                            break;
+                        default:
+                            Materialize.toast(data.result, 3000, "errorToast");
+                            break;
+                    }
+                },
+                complete:function () {
+                    $(btn).next().hide();
+                    $(btn).show();
                 }
             })
         }

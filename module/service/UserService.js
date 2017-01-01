@@ -12,27 +12,25 @@ class UserService {
     regUser(user) {
         var daoSelf = this;
         return new Promise(function (resolve, reject) {
-            daoSelf.checkMobile(user.mobile)
+            if (!daoSelf.checkMobileRegex(user.mobile)) {
+                reject(new ResultBean(ErrorCode.UserMobileError, ErrorCode.UserMobileErrorStr));
+                return;
+            }
+            //查找用户
+            UserModel.findByProperty({mobile: user.mobile})
                 .then(function () {
-                    return UserModel.findByProperty({mobile: user.mobile});
-                }, function (err) {
-                    reject(err);
-                    throw 0;
-                })
-                .then(function () {
+                    //不存在抛出异常
                     reject(new ResultBean(ErrorCode.UserExistsError, ErrorCode.UserExistsErrorStr));
                 }, function () {
-                    return UserModel.generateAccessTokenByUser(user);
-                })
-                .then(function () {
+                    //设置token
+                    user = UserModel.generateAccessTokenByUser(user);
+                    //加密密码
                     user.password = helpers.md5(user.password);
-                    return UserModel.insertUser(user);
-                })
-                .then(function (doc) {
-                    resolve(new ResultBean(ErrorCode.SUCCESS, doc));
-                })
-                .catch(err=> {
-                    reject(err);
+                    //添加到数据库
+                    UserModel.insertUser(user)
+                        .then(function (doc) {
+                            resolve(new ResultBean(ErrorCode.SUCCESS, doc));
+                        });
                 });
         });
     }
@@ -45,42 +43,25 @@ class UserService {
     loginUser(user) {
         var daoSelf = this;
         return new Promise(function (resolve, reject) {
-            daoSelf.checkMobile(user.mobile)
-                .then(function () {
-                    return UserModel.findByProperty({mobile: user.mobile});
-                }, function (err) {
-                    reject(err);
-                })
+            if (!daoSelf.checkMobileRegex(user.mobile)) {
+                reject(new ResultBean(ErrorCode.UserMobileError, ErrorCode.UserMobileErrorStr));
+                return;
+            }
+            UserModel.findByProperty({mobile: user.mobile})
                 .then(function (result) {
                     if (result.password == helpers.md5(user.password)) {
-                        return UserModel.generateAccessTokenByUser(result);
+                        result = UserModel.generateAccessTokenByUser(result);
+                        UserModel.updateUser(result)
+                            .then(function (result) {
+                                resolve(new ResultBean(ErrorCode.SUCCESS, result));
+                            });
                     } else {
                         reject(new ResultBean(ErrorCode.UserPasswordError, ErrorCode.UserPasswordErrorStr));
                     }
-                })
-                .then(function (result) {
-                    return UserModel.updateUser(result);
-                })
-                .then(function (result) {
-                    resolve(new ResultBean(ErrorCode.SUCCESS, result));
-                })
-                .catch(err=> {
-                    reject(err);
+                }, function () {
+                    reject(new ResultBean(ErrorCode.UserUnExistsError, ErrorCode.UserUnExistsErrorStr));
                 })
         });
-    }
-
-    checkMobile(mobile) {
-        var daoSelf = this;
-        return new Promise(function (res, rej) {
-            if (!daoSelf.checkMobileRegex(mobile)) {
-                rej(new ResultBean(ErrorCode.UserMobileError, ErrorCode.UserMobileErrorStr));
-            } else {
-                res();
-            }
-        });
-
-        return true;
     }
 
     checkMobileRegex(mobile) {

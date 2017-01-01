@@ -21,7 +21,16 @@ router.post('/add', function (req, res) {
         .then(function (data) {
             res.send(data)
         }, function (err) {
+            res.send(err)
+        })
+});
+
+router.post('/remove', function (req, res) {
+    eatMemberService.removeMember(req.body.userId)
+        .then(function (data) {
             res.send(data)
+        }, function (err) {
+            res.send(err)
         })
 });
 

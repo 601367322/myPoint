@@ -3,6 +3,8 @@
  */
 var mongoose = require('mongoose');
 var UserModel = require('./UserBeanSchema');
+var ErrorCode = require('../../common/ErrorCode');
+var ResultBean = require('../bean/ResultBean');
 
 var EatMemberSchema = mongoose.Schema({
     user: {
@@ -39,11 +41,20 @@ EatMemberSchema.statics.findByUserId = function (userId) {
     var self = this;
     return new Promise(function (res, rej) {
         self.find({user: userId}, function (err, result) {
-            if (result.length == 0) {
-                res("no_exist")
+            if (result.length > 0) {
+                res(result)
             } else {
-                rej("exist");
+                rej();
             }
+        })
+    })
+};
+
+EatMemberSchema.statics.removeMember = function (userId) {
+    var self = this;
+    return new Promise(function (res, rej) {
+        self.remove({user: userId}, function (err, result) {
+            res();
         })
     })
 };

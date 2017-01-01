@@ -22,27 +22,35 @@ class EatMemberService {
     insertMember(userId) {
         return new Promise(function (res, reject) {
             EatMemberModel.findByUserId(userId)
-                .then(function (data) {
-                    res(EatMemberModel.insertMember(userId));
+                .then(function () {
+                    reject(new ResultBean(ErrorCode.EatMemberExistError, ErrorCode.EatMemberExistErrorStr));
                 }, function (err) {
-                    reject(new ResultBean(ErrorCode.EatMemberExistError, ErrorCode.EatMemberExistErrorStr));
-                })
-                .then(function (member) {
-                    UserModel.findByProperty({_id: userId})
-                        .then(function (user) {
-                            user.eatMember = member._id;
-                            return UserModel.updateUser(user);
-                        })
-                        .then(function (result) {
-                            res(new ResultBean(ErrorCode.SUCCESS, result))
-                        }, function (err) {
-                            rej(new ResultBean(ErrorCode.CommonError, ErrorCode.CommonErrorStr));
-                        })
-                },function (err) {
-                    reject(new ResultBean(ErrorCode.EatMemberExistError, ErrorCode.EatMemberExistErrorStr));
+                    EatMemberModel.insertMember(userId)
+                        .then(function (member) {
+                            UserModel.findByProperty({_id: userId})
+                                .then(function (user) {
+                                    user.eatMember = member._id;
+                                    UserModel.updateUser(user)
+                                        .then(function (result) {
+                                            res(new ResultBean(ErrorCode.SUCCESS, result))
+                                        }, function () {
+                                            reject(new ResultBean(ErrorCode.CommonError, ErrorCode.CommonErrorStr));
+                                        });
+                                });
+                        }, function () {
+                            reject(new ResultBean(ErrorCode.EatMemberExistError, ErrorCode.EatMemberExistErrorStr));
+                        });
                 });
-            ;
         })
+    }
+
+    removeMember(userId) {
+        return new Promise(function (res, rej) {
+            EatMemberModel.removeMember(userId)
+                .then(function () {
+                    res(new ResultBean(ErrorCode.SUCCESS, null))
+                })
+        });
     }
 
 }

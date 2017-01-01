@@ -33,14 +33,8 @@ UserBeanSchema.statics.findByProperty = function (property) {
 };
 
 UserBeanSchema.statics.generateAccessTokenByUser = function (user) {
-    return new Promise(function (res, rej) {
-        try {
-            user.accessToken = sha1(user.mobile + new Date().getMilliseconds() + user.password);
-            res(user);
-        } catch (err) {
-            rej(err);
-        }
-    })
+    user.accessToken = sha1(user.mobile + new Date().getMilliseconds() + user.password);
+    return user;
 };
 
 UserBeanSchema.statics.findAll = function () {
