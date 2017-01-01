@@ -2,7 +2,6 @@ var UserModel = require('../bean/UserBeanSchema');
 var ErrorCode = require('../../common/ErrorCode');
 var ResultBean = require('../bean/ResultBean');
 var helpers = require("request/lib/helpers");
-var Rx = require('rx');
 
 class UserService {
 
@@ -12,39 +11,30 @@ class UserService {
      */
     regUser(user) {
         var daoSelf = this;
-
-        return Rx.Observable.create(function (observer) {
+        return new Promise(function (resolve, reject) {
             daoSelf.checkMobile(user.mobile)
-                .flatMap(function () {
-                    return
+                .then(function () {
+                    return UserModel.findByProperty({mobile: user.mobile});
+                }, function (err) {
+                    reject(err);
+                    throw 0;
                 })
-                .subscribe(()=> {
-
-                }, (error)=> {
-                    observer.onError(error);
+                .then(function () {
+                    reject(new ResultBean(ErrorCode.UserExistsError, ErrorCode.UserExistsErrorStr));
+                }, function () {
+                    return UserModel.generateAccessTokenByUser(user);
                 })
+                .then(function () {
+                    user.password = helpers.md5(user.password);
+                    return UserModel.insertUser(user);
+                })
+                .then(function (doc) {
+                    resolve(new ResultBean(ErrorCode.SUCCESS, doc));
+                })
+                .catch(err=> {
+                    reject(err);
+                });
         });
-
-        // return new Promise(function (resolve, reject) {
-        //     daoSelf.checkMobile(user.mobile)
-        //         .then(function () {
-        //             UserModel.findByProperty({mobile: user.mobile})
-        //                 .then(function () {
-        //                     reject(new ResultBean(ErrorCode.UserExistsError, ErrorCode.UserExistsErrorStr));
-        //                 }, function () {
-        //                     UserModel.generateAccessTokenByUser(user)
-        //                         .then(function () {
-        //                             user.password = helpers.md5(user.password);
-        //                             UserModel.insertUser(user).then(function (doc) {
-        //                                 resolve(new ResultBean(ErrorCode.SUCCESS, doc));
-        //                             });
-        //                         });
-        //                 });
-        //         }, function (err) {
-        //             reject(err);
-        //             throw 0;
-        //         });
-        // });
     }
 
     /**
@@ -82,22 +72,15 @@ class UserService {
 
     checkMobile(mobile) {
         var daoSelf = this;
-        // return new Promise(function (res, rej) {
-        //     if (!daoSelf.checkMobileRegex(mobile)) {
-        //         rej(new ResultBean(ErrorCode.UserMobileError, ErrorCode.UserMobileErrorStr));
-        //     } else {
-        //         res();
-        //     }
-        // });
-
-        return Rx.Observable.create(function (observer) {
+        return new Promise(function (res, rej) {
             if (!daoSelf.checkMobileRegex(mobile)) {
-                observer.onError(new ResultBean(ErrorCode.UserMobileError, ErrorCode.UserMobileErrorStr));
+                rej(new ResultBean(ErrorCode.UserMobileError, ErrorCode.UserMobileErrorStr));
             } else {
-                observer.onNext();
-                observer.onCompleted();
+                res();
             }
-        })
+        });
+
+        return true;
     }
 
     checkMobileRegex(mobile) {

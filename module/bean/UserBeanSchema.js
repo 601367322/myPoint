@@ -8,8 +8,6 @@ var sha1 = require('sha1');
 var ErrorCode = require('../../common/ErrorCode');
 var ResultBean = require('../bean/ResultBean');
 
-var Rx = require('rx');
-
 var UserBeanSchema = mongoose.Schema({
     mobile: String,
     password: String,
@@ -35,13 +33,12 @@ UserBeanSchema.statics.findByProperty = function (property) {
 };
 
 UserBeanSchema.statics.generateAccessTokenByUser = function (user) {
-    return Rx.Observable.create(function (observer) {
+    return new Promise(function (res, rej) {
         try {
             user.accessToken = sha1(user.mobile + new Date().getMilliseconds() + user.password);
-            observer.onNext(user);
-            observer.onCompleted();
+            res(user);
         } catch (err) {
-            observer.onError(err);
+            rej(err);
         }
     })
 };

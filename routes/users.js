@@ -45,9 +45,9 @@ router.post('/register', upload.single('avatar'), function (req, res, next) {
         password: req.body.password,
         nickname: req.body.nickname,
         avatar: req.file.path
-    }).subscribe(function (result) {
+    }).then(function (result) {
         loginSuccess(req, res, result);
-    },function (error) {
+    }, function (error) {
         fs.unlink(req.file.path);
         res.render('user/register', {error: error});
     });
