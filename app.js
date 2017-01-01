@@ -5,13 +5,14 @@ var logger = require('morgan');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var db = require('./module/dao/DBConnect');
+var db = require('./module/service/DBConnect');
 var loginFilter = require('./module/filter/LoginFilter');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var group = require('./routes/group');
 var eat = require('./routes/eat');
+var manage = require('./routes/manage');
 
 var app = express();
 
@@ -32,16 +33,20 @@ app.use(session({
     saveUninitialized: true,
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
 
 //登录拦截器
 app.use(loginFilter);
-
+app.use(function (req, res, next) {
+    res.locals.user = req.session.user || null;
+    next();
+});
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('/group', group);
 app.use('/eat', eat);
+app.use('/manage', manage);
 
 
 // catch 404 and forward to error handler

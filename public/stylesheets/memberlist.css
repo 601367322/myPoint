@@ -1,0 +1,18 @@
+.myavatar {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #b9b6b0;
+}
+
+.vertical-align-middle {
+    vertical-align: middle;
+}
+
+.nickname{
+    margin-left: 8px;
+}
+
+.member-item{
+    padding-top: 12px;
+    padding-bottom: 12px;
+}

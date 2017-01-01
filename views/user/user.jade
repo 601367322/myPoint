@@ -1,34 +1,63 @@
 extends ../layout
 
 block head
-    - var title = user.nickname;
+    - title = user.nickname;
+    - needBack = false;
     link(href='/stylesheets/user.css' rel='stylesheet')
     script(src='/javascripts/countup.js')
 block content
-    div(class="padding_content")
-        img(src="#{user.avatar}" class="circle")
-
-        //h5 我的积分
-        //p(id="points")
-        //script.
-        //    var numAnim = new CountUp("points", 0, 100);
-        //    numAnim.start();
-        //h5 我的小组
-        //p
-        //    div(class="chip") 健身小组
-        //    div(class="chip") 练字小组
-        //    div(class="chip") Model Thinking
-        //div(class="padding_button")
-        //    button(class="btn-large waves-effect waves-light" id="createGroupBtn") 创建小组
-        //    script.
-        //        $("#createGroupBtn").click(function () {
-        //            window.location.href = "/group/create";
-        //            return false;
-        //        });
-        div(class="padding_button")
-            button(class="btn-large waves-effect waves-light red" id="exitBtn") 退出
+    div(class="row top_margin")
+        div(class="center row")
+            p 您好#{user.nickname}，欢迎来到腾跃
+            img(src="#{user.avatar}" class="circle avatar")
+        div(class="row col s12")
+            a(class="waves-effect waves-light btn-large col s12")
+                | 今天跟谁一起吃 💖
+        if user.level > 0
+            div(class="row col s12")
+                button(class="btn-large waves-effect waves-light col s12" id="manage") 管理成员
+                script.
+                    $("#manage").click(function () {
+                        window.location.href = "/manage";
+                        return false;
+                    });
+        div(class="row col s12")
+            button(class="btn-large waves-effect waves-light red col s12" id="exitBtn") 退出
             script.
                 $("#exitBtn").click(function () {
                     window.location.href = "/users/exit";
                     return false;
                 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //h5 我的积分
+                //p(id="points")
+                //script.
+                //    var numAnim = new CountUp("points", 0, 100);
+                //    numAnim.start();
+                //h5 我的小组
+                //p
+                //    div(class="chip") 健身小组
+                //    div(class="chip") 练字小组
+                //    div(class="chip") Model Thinking
+                //div(class="padding_button")
+                //    button(class="btn-large waves-effect waves-light" id="createGroupBtn") 创建小组
+                //    script.
+                //        $("#createGroupBtn").click(function () {
+                //            window.location.href = "/group/create";
+                //            return false;
+                //        });

@@ -1,6 +1,6 @@
 先启动数据库
 ===
-> mongod -dbpath Document/mongo/data/db/
+> mongod -dbpath ~/Documents/mongo/data/db/
 
 再启动服务
 ===

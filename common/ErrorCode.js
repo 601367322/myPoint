@@ -3,6 +3,8 @@
  */
 module.exports = {
     SUCCESS: 0,
+    CommonError: -1,
+    CommonErrorStr: "外星人来了，快跑！",
     UserExistsError: 10001,
     UserExistsErrorStr: "该用户已注册",
     UserUnExistsError: 10002,
@@ -10,5 +12,7 @@ module.exports = {
     UserMobileError: 10003,
     UserMobileErrorStr: "手机号格式不正确",
     UserPasswordError: 10004,
-    UserPasswordErrorStr: "密码不正确"
+    UserPasswordErrorStr: "密码不正确",
+    EatMemberExistError: 10005,
+    EatMemberExistErrorStr: "已添加该成员",
 };

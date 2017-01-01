@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var UserDao = require('../module/dao/UserDao');
+var UserService = require('../module/service/UserService');
 var ErrCode = require('../common/ErrorCode');
-var userDao = new UserDao();
+var userService = new UserService();
 var multer = require('multer');
 var fs = require("fs");
 var ResultBean = require('../module/bean/ResultBean');
@@ -12,7 +12,7 @@ var ResultBean = require('../module/bean/ResultBean');
  * 用户主页
  */
 router.get('/', function (req, res, next) {
-    res.render('user/user', {user: req.session.user});
+    res.render('user/user');
 });
 
 /**
@@ -20,7 +20,7 @@ router.get('/', function (req, res, next) {
  */
 router.post('/login', function (req, res, next) {
     let mobile = req.body.mobile;
-    userDao.loginUser({mobile: mobile, password: req.body.password})
+    userService.loginUser({mobile: mobile, password: req.body.password})
         .then(function (result) {
             loginSuccess(req, res, result);
         }, function (error) {
@@ -40,14 +40,14 @@ router.get('/register', function (req, res, next) {
  */
 var upload = multer({dest: 'uploads/avatar'});
 router.post('/register', upload.single('avatar'), function (req, res, next) {
-    userDao.regUser({
+    userService.regUser({
         mobile: req.body.mobile,
         password: req.body.password,
         nickname: req.body.nickname,
         avatar: req.file.path
-    }).then(function (result) {
+    }).subscribe(function (result) {
         loginSuccess(req, res, result);
-    }, function (error) {
+    },function (error) {
         fs.unlink(req.file.path);
         res.render('user/register', {error: error});
     });

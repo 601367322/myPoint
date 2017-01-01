@@ -5,6 +5,11 @@
 var mongoose = require('mongoose');
 var sha1 = require('sha1');
 
+var ErrorCode = require('../../common/ErrorCode');
+var ResultBean = require('../bean/ResultBean');
+
+var Rx = require('rx');
+
 var UserBeanSchema = mongoose.Schema({
     mobile: String,
     password: String,
@@ -12,7 +17,8 @@ var UserBeanSchema = mongoose.Schema({
     avatar: String,
     groupId: String,
     level: {type: Number, default: 0},
-    accessToken: String
+    accessToken: String,
+    eatMember: {type: mongoose.Schema.Types.ObjectId, ref: "eat_member"}
 });
 
 UserBeanSchema.statics.findByProperty = function (property) {
@@ -20,7 +26,7 @@ UserBeanSchema.statics.findByProperty = function (property) {
     return new Promise(function (resolve, reject) {
         model.find(property, function (err, result) {
             if (err || result.length == 0) {
-                reject(err);
+                reject(new ResultBean(ErrorCode.UserUnExistsError, ErrorCode.UserUnExistsErrorStr));
             } else {
                 resolve(result[0]);
             }
@@ -29,23 +35,62 @@ UserBeanSchema.statics.findByProperty = function (property) {
 };
 
 UserBeanSchema.statics.generateAccessTokenByUser = function (user) {
-    return new Promise(function (res, rej) {
+    return Rx.Observable.create(function (observer) {
         try {
             user.accessToken = sha1(user.mobile + new Date().getMilliseconds() + user.password);
-            res(user);
+            observer.onNext(user);
+            observer.onCompleted();
         } catch (err) {
-            rej(err);
+            observer.onError(err);
         }
+    })
+};
+
+UserBeanSchema.statics.findAll = function () {
+    var model = this;
+    return new Promise(function (res, rej) {
+        model.find({}, function (err, result) {
+            if (err) {
+                rej(err);
+            } else {
+                res(result);
+            }
+        })
+    })
+};
+
+UserBeanSchema.statics.findAllWithEat = function () {
+    var model = this;
+    return new Promise(function (res, rej) {
+        model.find()
+            .populate('eatMember')
+            .exec(function (err, result) {
+                if (err) {
+                    rej(err);
+                } else {
+                    console.log(result);
+                    res(result);
+                }
+            });
     })
 };
 
 UserBeanSchema.statics.updateUser = function (user) {
     var model = this;
     return new Promise(function (res, rej) {
-        model.update(user, function (err, result) {
+        model.update({_id: user._id}, user, {multi: true}, function (err, result) {
             res(user);
         })
     })
+};
+
+UserBeanSchema.statics.insertUser = function (user) {
+    return new Promise(function (res, rej) {
+        var model = require('./UserBeanSchema');
+        new model(user).save(function (err, result) {
+            res(result);
+        });
+    });
 };
 
 // UserBeanSchema.methods.findUserByMobile = function (callback) {

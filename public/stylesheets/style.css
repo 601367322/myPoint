@@ -9,7 +9,6 @@ a {
 }
 
 #content {
-    padding-top: 12px;
     flex: 1 0 auto;
 }
 
@@ -43,12 +42,10 @@ footer.page-footer {
     padding: 0 0.75rem;
 }
 
-.padding_button {
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 20px;
-}
-
 .match_parent_width {
     width: 100%;
+}
+
+.top_margin{
+    margin-top: 12px;
 }

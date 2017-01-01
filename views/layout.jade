@@ -1,15 +1,15 @@
 doctype html
 html
     head
-        link(href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
+        link(href="/stylesheets/icon.css" rel="stylesheet")
         link(rel='stylesheet',href='/stylesheets/materialize.css')
         script(src='/javascripts/jquery-3.1.1.min.js')
         script(src='/javascripts/materialize.js')
         meta(name='viewport' content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0")
         link(rel='stylesheet', href='/stylesheets/style.css')
-
+        - var needBack = true;
+        - var title = "";
         block head
-
         title= title
     body
         if error != null
@@ -18,6 +18,12 @@ html
         div(class="navbar-fixed")
             nav
                 div(class="nav-wrapper")
+                    if needBack
+                        i(class="waves-effect waves-light material-icons left" style="width:56px; padding-left:10px" onclick="back()") navigate_before
+                            script.
+                                function back() {
+                                    history.go(-1);
+                                }
                     a(href="#" class="brand-logo") #{title}
                     block nav_menu
         div(id="content")

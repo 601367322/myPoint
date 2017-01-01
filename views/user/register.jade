@@ -1,11 +1,11 @@
 extends ../layout
 
 block head
-    - var title = "注册"
+    - title = "注册"
     link(rel="stylesheet" href="/stylesheets/login.css")
 block nav_menu
 block content
-    div(class="row")
+    div(class="row top_margin")
         script.
             function checkForm(form) {
                 if (form.mobile.value == "") {
@@ -45,5 +45,5 @@ block content
                     input(type="file" name="avatar")
                 div(class="file-path-wrapper")
                     input(class="file-path validate" type="text")
-            div(class="padding_button")
+            div(class="col s12")
                 button(class="btn-large waves-effect waves-light" type="submit" id="loginBtn") 提交注册

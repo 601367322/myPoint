@@ -1,0 +1,46 @@
+extends ../layout
+
+block head
+    - title = "成员管理";
+    link(href='/stylesheets/memberlist.css' rel='stylesheet')
+block content
+    div(class="row")
+        ul(class="collection" style="margin:0")
+            for member in data
+                li(class="collection-item")
+                    div
+                        img(src="#{member.avatar}" alt="" class="circle myavatar vertical-align-middle")
+                        span(class="title vertical-align-middle nickname") #{member.nickname}
+                        if user.level >= 1
+                            if member.eatMember
+                                a(class="secondary-content waves-effect waves-light btn red" style="margin-top:7px;" href="javascript:addEatMember('#{member._id}');") 删除
+                            else
+                                a(class="secondary-content waves-effect waves-light btn" style="margin-top:7px;" href="javascript:addEatMember('#{member._id}');") 添加
+                        else if user.level == 8888
+                            a(class='secondary-content dropdown-button btn' href='#' style="margin-top:7px;" data-activates='dropdown1') 管理
+                            ul(id='dropdown1' class='dropdown-content')
+                                li
+                                    a(href="#!") one
+                                li(class="divider")
+                                li
+                                    a(href="#!") two
+                                li(class="divider")
+                                li
+                                    a(href="#!") three
+    script.
+        function addEatMember(userId) {
+            $.ajax({
+                url:'/manage/add',
+                type:'post',
+                async:true,
+                data:{
+                    userId:userId,
+                },
+                success:function (data) {
+                    alert(data);
+                },
+                error:function (err) {
+                    alert(err);
+                }
+            })
+        }
