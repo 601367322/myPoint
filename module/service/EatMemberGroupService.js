@@ -162,6 +162,19 @@ class EatMemberGroupService {
                 }
             })
     }
+
+    getMyLastGroup(userId) {
+        return new Promise(function (res, rej) {
+            EatMemberGroupSchema.findLastByUserId(userId)
+                .then(function (doc) {
+                    if (!doc) {
+                        rej(new ResultBean(ErrorCode.CommonError, "今天还没有进行匹配"));
+                    } else {
+                        res(doc);
+                    }
+                })
+        });
+    }
 }
 
 module.exports = EatMemberGroupService;

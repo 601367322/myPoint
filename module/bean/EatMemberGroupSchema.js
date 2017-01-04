@@ -49,6 +49,18 @@ EatMemberGroupSchema.statics.findByUserId = function (userId) {
     })
 };
 
+EatMemberGroupSchema.statics.findLastByUserId = function (userId) {
+    var self = this;
+    return new Promise(function (res, rej) {
+        self.findOne({jia: userId})
+            .sort({time: -1})
+            .populate(['jia', 'yi'])
+            .exec(function (err, doc) {
+                res(doc);
+            })
+    })
+};
+
 EatMemberGroupSchema.statics.findAllEnable = function () {
     var self = this;
     return new Promise(function (res, rej) {

@@ -19,6 +19,17 @@ class EatMemberService {
         });
     }
 
+    getEnableMemberList() {
+        return new Promise(function (res, rej) {
+            EatMemberModel.findAll()
+                .then(function (result) {
+                    res(result);
+                }, function (err) {
+                    rej(new ResultBean(ErrorCode.CommonError, ErrorCode.CommonErrorStr))
+                });
+        });
+    }
+
     insertMember(userId) {
         return new Promise(function (res, reject) {
             EatMemberModel.findByUserId(userId)

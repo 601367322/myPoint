@@ -1,8 +1,51 @@
 extends ../layout
 
 block head
-    - var title = "吃饭"
+    - var title = "今天和谁一起吃"
     link(rel="stylesheet" href="/stylesheets/login.css")
 block nav_menu
 block content
-    div(class="row")
+    style.
+        .myavatar {
+            width: 100px;
+            height: 100px;;
+        }
+    div(class="" id="center" style="position:absolute;top:50%;left:50%;margin:-100px 0 0 -150px;width:300px;height:200px;z-index:99; text-align:center")
+        if data != null && data.length > 0 && group != null
+            div(id="hidecontent")
+                for member in data
+                    if member.user._id != user._id
+                        div(class="hide")
+                            img(src="#{member.user.avatar}" class="circle myavatar")
+                            p #{member.user.nickname}
+                div(class="hide")
+                    img(src="#{group.yi.avatar}" alt="" class="circle myavatar")
+                    p #{group.yi.nickname}
+            div(id="mycontent")
+            p(id="timer_p") 系统正在努力为您配对，5秒
+            script.
+                function change() {
+                    var random = parseInt(Math.round(Math.random() * #{data.length}));
+                    var pic = $("#hidecontent div:eq(" + random + ")");
+                    $("#mycontent").html($(pic).html());
+                    prev = pic;
+                }
+                var timer = setInterval(change, 100);
+
+                var allTime = 5000;
+                function setTimerTip() {
+                    allTime -= 1000;
+                    if (allTime == 0) {
+                        $("#timer_p").text("配对成功，祝您用餐愉快");
+                    } else {
+                        $("#timer_p").text("系统正在努力为您配对，" + allTime / 1000 + "秒");
+                    }
+                }
+
+                var timer2 = setInterval(setTimerTip, 1000);
+
+                setTimeout(function () {
+                    clearInterval(timer)
+                    clearInterval(timer2);
+                    $("#mycontent").html($("#hidecontent div:last").html());
+                }, 5010);

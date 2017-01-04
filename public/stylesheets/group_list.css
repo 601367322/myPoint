@@ -1,5 +1,15 @@
-.myavatar{
+.myavatar {
     width: 80px;
-    height:80px;
-    border:1px solid #b9b6b0;
+    height: 80px;
+    border: 1px solid #b9b6b0;
+}
+
+.screen_center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -150px;
+    width: 300px;
+    height: 200px;
+    z-index: 99;
 }

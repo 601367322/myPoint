@@ -19,11 +19,12 @@ html
             nav
                 div(class="nav-wrapper")
                     if needBack
-                        i(class="waves-effect waves-light material-icons left" style="width:56px; padding-left:10px" onclick="back()") navigate_before
-                            script.
-                                function back() {
-                                    history.go(-1);
-                                }
+                        a(class="waves-effect waves-light left center " style="width:56px; padding-left:10px;vertical-align: middle;" onclick="back()" href="javascript:void(0);")
+                            img(src="/images/back_normal.png" style="width:30px;height:30px;vertical-align: middle;" class="center")
+                        script.
+                            function back() {
+                                history.go(-1);
+                            }
                     a(href="#" class="brand-logo") #{title}
                     block nav_menu
         div(id="content")
