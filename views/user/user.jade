@@ -11,7 +11,7 @@ block content
             p 您好#{user.nickname}，欢迎来到腾跃
             img(src="#{user.avatar}" class="circle avatar")
         div(class="row col s12")
-            a(class="waves-effect waves-light btn-large col s12")
+            a(class="waves-effect waves-light btn-large col s12" href="/eat")
                 | 今天跟谁一起吃 💖
         if user.level > 0
             div(class="row col s12")
@@ -19,6 +19,13 @@ block content
                 script.
                     $("#manage").click(function () {
                         window.location.href = "/eatmanage";
+                        return false;
+                    });
+            div(class="row col s12")
+                button(class="btn-large waves-effect waves-light col s12" id="generate_eat") 随机产生
+                script.
+                    $("#generate_eat").click(function () {
+                        window.location.href = "/eatmanage/generate";
                         return false;
                     });
         div(class="row col s12")

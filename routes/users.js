@@ -6,7 +6,7 @@ var userService = new UserService();
 var multer = require('multer');
 var fs = require("fs");
 var ResultBean = require('../module/bean/ResultBean');
-
+var sharp = require("sharp");
 
 /**
  * 用户主页
@@ -40,17 +40,29 @@ router.get('/register', function (req, res, next) {
  */
 var upload = multer({dest: 'uploads/avatar'});
 router.post('/register', upload.single('avatar'), function (req, res, next) {
-    userService.regUser({
-        mobile: req.body.mobile,
-        password: req.body.password,
-        nickname: req.body.nickname,
-        avatar: req.file.path
-    }).then(function (result) {
-        loginSuccess(req, res, result);
-    }, function (error) {
-        fs.unlink(req.file.path);
-        res.render('user/register', {error: error});
-    });
+    sharp(req.file.path)
+        .resize(100, 100)
+        .sharpen()
+        .quality(100)
+        .toFile(req.file.path + "_", function (err) {
+            fs.unlink(req.file.path);
+            if (!err) {
+                userService.regUser({
+                    mobile: req.body.mobile,
+                    password: req.body.password,
+                    nickname: req.body.nickname,
+                    avatar: "/" + req.file.path + "_"
+                }).then(function (result) {
+                    loginSuccess(req, res, result);
+                }, function (error) {
+                    fs.unlink(req.file.path + "_");
+                    res.render('user/register', {error: error});
+                });
+            } else {
+                res.render('user/register', {error: new ResultBean(ErrCode.CommonError, "头像上传失败")})
+            }
+        });
+
 });
 
 router.get('/exit', function (req, res, next) {

@@ -27,14 +27,16 @@ EatMemberSchema.statics.insertMember = function (userId) {
 EatMemberSchema.statics.findAll = function () {
     var model = this;
     return new Promise(function (res, rej) {
-        model.find({}, function (err, result) {
-            if (err) {
-                rej(err);
-            } else {
-                res(result);
-            }
-        })
-    })
+        model.find()
+            .populate('user')
+            .exec(function (err, result) {
+                if (err) {
+                    rej(err);
+                } else {
+                    res(result);
+                }
+            });
+    });
 };
 
 EatMemberSchema.statics.findByUserId = function (userId) {

@@ -15,4 +15,6 @@ module.exports = {
     UserPasswordErrorStr: "密码不正确",
     EatMemberExistError: 10005,
     EatMemberExistErrorStr: "已添加该成员",
+    RepetitiveGenerateEatGroupError:10006,
+    RepetitiveGenerateEatGroupErrorStr:"今天的小组已经生成过了"
 };

@@ -59,7 +59,6 @@ UserBeanSchema.statics.findAllWithEat = function () {
                 if (err) {
                     rej(err);
                 } else {
-                    console.log(result);
                     res(result);
                 }
             });

@@ -12,6 +12,7 @@
     "express": "~4.13.4",
     "express-session": "^1.14.1",
     "jade": "~1.11.0",
+    "moment": "^2.17.1",
     "mongodb": "^2.2.11",
     "mongoose": "^4.6.8",
     "morgan": "~1.7.0",
@@ -19,7 +20,8 @@
     "request": "^2.76.0",
     "rx": "^4.1.0",
     "serve-favicon": "~2.3.0",
-    "sha1": "^1.1.1"
+    "sha1": "^1.1.1",
+    "sharp": "^0.17.0"
   },
   "description": "腾跃积分系统",
   "main": "app.js",
