@@ -32,42 +32,42 @@ class EatMemberGroupService {
     generateGroups() {
         var self = this;
         return new Promise(function (res, rej) {
-            EatMemberGroupSchema.findAllEnableAndToday()
-                .then(function (result) {
-                    if (result.length > 0) {
-                        res(result);
-                    } else {
-                        EatMemberGroupSchema.incapableAll()
-                            .then(function () {
-                                EatMemberSchema.findAll()
-                                    .then(function (result) {
-                                        if (result.length <= 1) {
-                                            rej(new ResultBean(ErrorCode.CommonError, "加入配对列表的人太少了"));
-                                            return;
-                                        }
-                                        var users = new Array();
-                                        result.forEach(function (member) {
-                                            users.push(member.user)
-                                        });
-
-                                        var randomUsers = new Array();
-                                        //随机排序
-                                        while (users.length > 0) {
-                                            var index = parseInt(Math.random() * users.length);
-                                            randomUsers.push(users[index]);
-                                            users.splice(index, 1);
-                                        }
-                                        //去掉最后一个单身狗
-                                        if (randomUsers.length % 2 != 0) {
-                                            randomUsers.pop();
-                                        }
-
-                                        var groups = new Array();
-                                        self.doPair(groups, randomUsers, res, rej);
-                                    })
+            // EatMemberGroupSchema.findAllEnableAndToday()
+            //     .then(function (result) {
+            //         if (result.length > 0) {
+            //             res(result);
+            //         } else {
+            EatMemberGroupSchema.incapableAll()
+                .then(function () {
+                    EatMemberSchema.findAll()
+                        .then(function (result) {
+                            if (result.length <= 1) {
+                                rej(new ResultBean(ErrorCode.CommonError, "加入配对列表的人太少了"));
+                                return;
+                            }
+                            var users = new Array();
+                            result.forEach(function (member) {
+                                users.push(member.user)
                             });
-                    }
+
+                            var randomUsers = new Array();
+                            //随机排序
+                            while (users.length > 0) {
+                                var index = parseInt(Math.random() * users.length);
+                                randomUsers.push(users[index]);
+                                users.splice(index, 1);
+                            }
+                            //去掉最后一个单身狗
+                            if (randomUsers.length % 2 != 0) {
+                                randomUsers.pop();
+                            }
+
+                            var groups = new Array();
+                            self.doPair(groups, randomUsers, res, rej);
+                        })
                 });
+            // }
+            // });
         });
     }
 
@@ -91,7 +91,7 @@ class EatMemberGroupService {
                         }
                     }
                     if (!exist) {
-                        counters.push(new Counter(0, group.yi));
+                        counters.push(new Counter(1, group.yi));
                     }
                 });
                 //将没有配对过的人加入队列
@@ -101,13 +101,31 @@ class EatMemberGroupService {
                         var counter = counters[i];
                         if (counter.getUser().mobile == user.mobile) {
                             exist = true;
-                            break;
                         }
                     }
                     if (!exist) {
                         counters.push(new Counter(0, user));
                     }
                 });
+
+                //将已配对人删掉
+                var unexist = new Array();
+                for (var ci = 0; ci < counters.length; ci++) {
+                    var counter = counters[ci];
+                    var exist = false;
+                    for (var i = 0; i < randomUsers.length; i++) {
+                        if (randomUsers[i].mobile == counter.user.mobile) {
+                            exist = true;
+                        }
+                    }
+                    if (!exist) {
+                        unexist.push(counter);
+                    }
+                }
+                unexist.forEach(function (counter) {
+                    self.removeByValue(counters, counter);
+                });
+
 
                 //筛选配对次数最少的所有人
                 var minCount = counters[0].getCount();
@@ -136,8 +154,10 @@ class EatMemberGroupService {
                     randomUsers.splice(tempIndex, 1);
                 }
 
-                groups.push(new EatMemberGroupSchema({jia: jia._id, yi: yi._id}));
-                groups.push(new EatMemberGroupSchema({jia: yi._id, yi: jia._id}));
+                if (jia != null && yi != null) {
+                    groups.push(new EatMemberGroupSchema({jia: jia._id, yi: yi._id}));
+                    groups.push(new EatMemberGroupSchema({jia: yi._id, yi: jia._id}));
+                }
 
                 if (randomUsers.length > 0) {
                     self.doPair(groups, randomUsers, res, rej);
@@ -147,8 +167,18 @@ class EatMemberGroupService {
             });
     }
 
+    removeByValue(array, val) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] == val) {
+                array.splice(i, 1);
+                break;
+            }
+        }
+    }
+
     addGroup(groups, res, rej) {
         var self = this;
+        console.log(groups[0])
         EatMemberGroupSchema.insertEatMemberGroup(groups[0])
             .then(function () {
                 groups.splice(0, 1);

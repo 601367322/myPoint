@@ -16,10 +16,10 @@ block content
                 for member in data
                     if member.user._id != user._id
                         div(class="hide")
-                            img(src="#{member.user.avatar}" class="circle myavatar")
+                            img(src=member.user.avatar class="circle myavatar")
                             p #{member.user.nickname}
                 div(class="hide")
-                    img(src="#{group.yi.avatar}" alt="" class="circle myavatar")
+                    img(src=group.yi.avatar alt="" class="circle myavatar")
                     p #{group.yi.nickname}
             div(id="mycontent")
             p(id="timer_p") 系统正在努力为您配对，5秒

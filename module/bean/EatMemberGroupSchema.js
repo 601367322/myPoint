@@ -43,9 +43,11 @@ EatMemberGroupSchema.statics.incapableAll = function () {
 EatMemberGroupSchema.statics.findByUserId = function (userId) {
     var self = this;
     return new Promise(function (res, rej) {
-        self.find({jia: userId}, function (err, doc) {
-            res(doc);
-        })
+        self.find({jia: userId})
+            .populate(['jia', 'yi'])
+            .exec(function (err, doc) {
+                res(doc);
+            })
     })
 };
 
@@ -64,9 +66,11 @@ EatMemberGroupSchema.statics.findLastByUserId = function (userId) {
 EatMemberGroupSchema.statics.findAllEnable = function () {
     var self = this;
     return new Promise(function (res, rej) {
-        self.find({state: 0}, function (err, doc) {
-            res(doc);
-        })
+        self.find({state: 0})
+            .populate(['jia', 'yi'])
+            .exec(function (err, doc) {
+                res(doc);
+            })
     })
 };
 

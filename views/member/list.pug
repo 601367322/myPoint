@@ -9,7 +9,7 @@ block content
             for member in data
                 li(class="collection-item")
                     div
-                        img(src="#{member.avatar}" alt="" class="circle myavatar vertical-align-middle")
+                        img(src=member.avatar alt="" class="circle myavatar vertical-align-middle")
                         span(class="title vertical-align-middle nickname") #{member.nickname}
                         if user.level >= 1
                             if member.eatMember
