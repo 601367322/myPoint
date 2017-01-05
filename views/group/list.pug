@@ -6,13 +6,14 @@ block head
 block content
     div(class="row")
         ul(class="collection" style="margin:0")
-            each group,index in data
-                if index % 2 == 0
-                    li(class="collection-item")
-                        div(class="left")
-                            img(src=group.jia.avatar alt="" class="circle myavatar")
-                            p(class="title center") #{group.jia.nickname}
-                        div(class="right")
-                            img(src=group.yi.avatar alt="" class="circle myavatar")
-                            p(class="title center") #{group.yi.nickname}
-                        div(class="clearfix")
+            if data != null
+                each group,index in data
+                    if index % 2 == 0
+                        li(class="collection-item")
+                            div(class="left")
+                                img(src=group.jia.avatar alt="" class="circle myavatar")
+                                p(class="title center") #{group.jia.nickname}
+                            div(class="right")
+                                img(src=group.yi.avatar alt="" class="circle myavatar")
+                                p(class="title center") #{group.yi.nickname}
+                            div(class="clearfix")
