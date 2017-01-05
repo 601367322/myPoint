@@ -8,6 +8,9 @@ var sha1 = require('sha1');
 var ErrorCode = require('../../common/ErrorCode');
 var ResultBean = require('../bean/ResultBean');
 
+var EatMemberSchema = require('./EatMemberSchema');
+var EatMemberGroupSchema = require('./EatMemberGroupSchema');
+
 var UserBeanSchema = mongoose.Schema({
     mobile: String,
     password: String,
@@ -16,7 +19,7 @@ var UserBeanSchema = mongoose.Schema({
     groupId: String,
     level: {type: Number, default: 0},
     accessToken: String,
-    eatMember: {type: mongoose.Schema.Types.ObjectId, ref: "eat_member"}
+    eatMember: {type: mongoose.Schema.Types.ObjectId, ref: "eat_member"},
 });
 
 UserBeanSchema.statics.findByProperty = function (property) {
@@ -81,6 +84,21 @@ UserBeanSchema.statics.insertUser = function (user) {
             res(result);
         });
     });
+};
+
+UserBeanSchema.statics.deleteUser = function (userId) {
+    var self = this;
+    return new Promise(function (res, rej) {
+        self.remove({_id: userId},function (err, result) {
+            EatMemberSchema.removeMember(userId)
+                .then(function (result) {
+                    EatMemberGroupSchema.removeAllByUserId(userId)
+                        .then(function (result) {
+                            res();
+                        })
+                })
+        });
+    })
 };
 
 // UserBeanSchema.methods.findUserByMobile = function (callback) {

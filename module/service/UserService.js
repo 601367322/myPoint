@@ -72,6 +72,17 @@ class UserService {
             return false;
         }
     }
+
+
+    deleteUser(userId) {
+        var self = this;
+        return new Promise(function (res, rej) {
+            UserModel.deleteUser(userId)
+                .then(function () {
+                    res();
+                });
+        })
+    }
 }
 
 module.exports = UserService;

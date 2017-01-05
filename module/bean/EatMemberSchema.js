@@ -56,7 +56,7 @@ EatMemberSchema.statics.removeMember = function (userId) {
     var self = this;
     return new Promise(function (res, rej) {
         self.remove({user: userId}, function (err, result) {
-            res();
+            res(result);
         })
     })
 };

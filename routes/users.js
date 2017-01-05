@@ -90,5 +90,12 @@ var loginSuccess = function (req, res, data) {
     }
 };
 
+router.post('/delete', function (req, res) {
+    userService.deleteUser(req.body.userId)
+        .then(function () {
+            res.send("ok");
+        });
+});
+
 
 module.exports = router;

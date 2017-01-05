@@ -86,5 +86,14 @@ EatMemberGroupSchema.statics.findAllEnableAndToday = function () {
     })
 };
 
+EatMemberGroupSchema.statics.removeAllByUserId = function (userId) {
+    var self = this;
+    return new Promise(function (res, rej) {
+        self.remove({"$or": [{jia: userId}, {yi: userId}]},function (err, result) {
+            res(result);
+        })
+    });
+};
+
 
 module.exports = mongoose.model('eat_member_group', EatMemberGroupSchema);

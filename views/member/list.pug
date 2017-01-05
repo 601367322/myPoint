@@ -11,30 +11,23 @@ block content
                     div
                         img(src=member.avatar alt="" class="circle myavatar vertical-align-middle")
                         span(class="title vertical-align-middle nickname") #{member.nickname}
-                        if user.level >= 1
-                            if member.eatMember
-                                a(class="secondary-content waves-effect waves-light btn red" style="margin-top:7px;" href="javascript:void(0)" onclick="javascript:changeEatMember(this,'#{member._id}');") 删除
-                            else
-                                a(class="secondary-content waves-effect waves-light btn" style="margin-top:7px;" href="javascript:void(0)" onclick="javascript:changeEatMember(this,'#{member._id}');") 添加
-                            div(class="secondary-content preloader-wrapper small active" style="margin-top:7px; display:none;")
-                                div(class="spinner-layer spinner-green-only")
-                                    div(class="circle-clipper left")
-                                        div(class="circle")
-                                    div(class="gap-patch")
-                                        div(class="circle")
-                                    div(class="circle-clipper right")
-                                        div(class="circle")
-                        else if user.level == 8888
-                            a(class='secondary-content dropdown-button btn' href='#' style="margin-top:7px;" data-activates='dropdown1') 管理
-                            ul(id='dropdown1' class='dropdown-content')
-                                li
-                                    a(href="#!") one
-                                li(class="divider")
-                                li
-                                    a(href="#!") two
-                                li(class="divider")
-                                li
-                                    a(href="#!") three
+                        if user.level > 0
+                            if user.level >= 1
+                                if member.eatMember
+                                    a(class="secondary-content waves-effect waves-light btn red" style="margin-top:7px;" href="javascript:void(0)" onclick="javascript:changeEatMember(this,'" + member._id + "');") 删除
+                                else
+                                    a(class="secondary-content waves-effect waves-light btn" style="margin-top:7px;" href="javascript:void(0)" onclick="javascript:changeEatMember(this,'" + member._id + "');") 添加
+                                div(class="secondary-content preloader-wrapper small active" style="margin-top:7px; display:none;")
+                                    div(class="spinner-layer spinner-green-only")
+                                        div(class="circle-clipper left")
+                                            div(class="circle")
+                                        div(class="gap-patch")
+                                            div(class="circle")
+                                        div(class="circle-clipper right")
+                                            div(class="circle")
+                            if user.level == 8888
+                                div
+                                    a(class='btn' href='javascript:void(0);' onclick="javascript:deleteUser(this,'" + member._id + "')" style="margin-top:7px;" data-activates='dropdown1') 删除用户
     script.
         function changeEatMember(btn, userId) {
             var url = '/eatmanage/add';
@@ -48,7 +41,7 @@ block content
                 data: {
                     userId: userId,
                 },
-                beforeSend:function () {
+                beforeSend: function () {
                     $(btn).next().show();
                     $(btn).hide();
                 },
@@ -68,9 +61,25 @@ block content
                             break;
                     }
                 },
-                complete:function () {
+                complete: function () {
                     $(btn).next().hide();
                     $(btn).show();
                 }
             })
         }
+    if user.level == 8888
+        script.
+            function deleteUser(btn, userId) {
+                $.ajax({
+                    url: '/users/delete',
+                    type: 'post',
+                    async: true,
+                    data: {
+                        userId: userId,
+                    },
+                    success: function (data) {
+                        var parent = $(btn).parents('.collection-item');
+                        $(parent).remove();
+                    }
+                })
+            }
