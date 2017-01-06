@@ -49,20 +49,23 @@ function selectFileImage(fileObj) {
                     //alert(expectWidth + ',' + expectHeight);  
                     //如果方向角不为1，都需要进行旋转 added by lzk  
                     if(Orientation != "" && Orientation != 1){
-                        alert('旋转处理');
+                        // alert('旋转处理');
                         switch(Orientation){
                             case 6://需要顺时针（向左）90度旋转  
-                                alert('需要顺时针（向左）90度旋转');
-                                rotateImg(this,'left',canvas);
+                                // alert('需要顺时针（向左）90度旋转');
+                                $("#rotate").val(-90);
+                                // rotateImg(this,'left',canvas);
                                 break;
                             case 8://需要逆时针（向右）90度旋转  
-                                alert('需要顺时针（向右）90度旋转');
-                                rotateImg(this,'right',canvas);
+                                // alert('需要顺时针（向右）90度旋转');
+                                // rotateImg(this,'right',canvas);
+                                $("#rotate").val(90);
                                 break;
                             case 3://需要180度旋转  
-                                alert('需要180度旋转');
-                                rotateImg(this,'right',canvas);//转两次  
-                                rotateImg(this,'right',canvas);
+                                // alert('需要180度旋转');
+                                // rotateImg(this,'right',canvas);//转两次
+                                // rotateImg(this,'right',canvas);
+                                $("#rotate").val(180);
                                 break;
                         }
                     }
@@ -84,17 +87,20 @@ function selectFileImage(fileObj) {
                         //alert('旋转处理');  
                         switch(Orientation){
                             case 6://需要顺时针（向左）90度旋转  
-                                alert('需要顺时针（向左）90度旋转');
-                                rotateImg(this,'left',canvas);
+                                // alert('需要顺时针（向左）90度旋转');
+                                $("#rotate").val(-90);
+                                // rotateImg(this,'left',canvas);
                                 break;
-                            case 8://需要逆时针（向右）90度旋转  
-                                alert('需要顺时针（向右）90度旋转');
-                                rotateImg(this,'right',canvas);
+                            case 8://需要逆时针（向右）90度旋转
+                                // alert('需要顺时针（向右）90度旋转');
+                                // rotateImg(this,'right',canvas);
+                                $("#rotate").val(90);
                                 break;
-                            case 3://需要180度旋转  
-                                alert('需要180度旋转');
-                                rotateImg(this,'right',canvas);//转两次  
-                                rotateImg(this,'right',canvas);
+                            case 3://需要180度旋转
+                                // alert('需要180度旋转');
+                                // rotateImg(this,'right',canvas);//转两次
+                                // rotateImg(this,'right',canvas);
+                                $("#rotate").val(180);
                                 break;
                         }
                     }

@@ -41,6 +41,7 @@ router.get('/register', function (req, res, next) {
 var upload = multer({dest: 'uploads/avatar'});
 router.post('/register', upload.single('avatar'), function (req, res, next) {
     sharp(req.file.path)
+        .rotate()
         .resize(100, 100)
         .sharpen()
         .quality(100)
