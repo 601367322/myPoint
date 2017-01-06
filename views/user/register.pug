@@ -3,6 +3,8 @@ extends ../layout
 block head
     - title = "注册"
     link(rel="stylesheet" href="/stylesheets/login.css")
+    script(src='/javascripts/imageupload.js')
+    script(src='/javascripts/exif.js')
 block nav_menu
 block content
     div(class="row top_margin")
@@ -42,7 +44,7 @@ block content
             div(class="file-field input-field col s12")
                 div(class="btn")
                     span 请选择头像
-                    input(type="file" name="avatar")
+                    input(type="file" name="avatar" accept="image/jpg,image/jpeg,image/png" onchange="selectFileImage(this);")
                 div(class="file-path-wrapper")
                     input(class="file-path validate" type="text")
             div(class="col s12")
