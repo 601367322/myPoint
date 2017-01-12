@@ -3,6 +3,17 @@ extends ../layout
 block head
     - title = "配对列表";
     link(href='/stylesheets/group_list.css' rel='stylesheet')
+    script(src='/javascripts/clipboard.js')
+    - var copy_str = "";
+        each group,index in data
+            if index % 2 == 0
+                - copy_str += group.jia.nickname+" - "+group.yi.nickname+"\n";
+block nav_menu
+    ul(id="nav-mobile" class="right")
+        li
+            a(href="javascript:void(0);" class="copy_btn" data-clipboard-text=copy_str) 复制配对信息
+            script.
+                new Clipboard('.copy_btn')
 block content
     div(class="row")
         ul(class="collection" style="margin:0")

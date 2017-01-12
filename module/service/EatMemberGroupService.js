@@ -198,7 +198,7 @@ class EatMemberGroupService {
             EatMemberGroupSchema.findLastByUserId(userId)
                 .then(function (doc) {
                     if (!doc) {
-                        rej(new ResultBean(ErrorCode.CommonError, "今天还没有进行匹配"));
+                        rej(new ResultBean(ErrorCode.CommonError, "今天还未进行匹配or你可能是个单身狗"));
                     } else {
                         res(doc);
                     }

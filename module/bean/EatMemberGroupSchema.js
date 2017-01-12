@@ -54,7 +54,8 @@ EatMemberGroupSchema.statics.findByUserId = function (userId) {
 EatMemberGroupSchema.statics.findLastByUserId = function (userId) {
     var self = this;
     return new Promise(function (res, rej) {
-        self.findOne({jia: userId})
+        var today = moment().format("YYYY-MM-DD");
+        self.findOne({jia: userId, time: {"$gte": new Date(today)}})
             .sort({time: -1})
             .populate(['jia', 'yi'])
             .exec(function (err, doc) {
@@ -89,7 +90,7 @@ EatMemberGroupSchema.statics.findAllEnableAndToday = function () {
 EatMemberGroupSchema.statics.removeAllByUserId = function (userId) {
     var self = this;
     return new Promise(function (res, rej) {
-        self.remove({"$or": [{jia: userId}, {yi: userId}]},function (err, result) {
+        self.remove({"$or": [{jia: userId}, {yi: userId}]}, function (err, result) {
             res(result);
         })
     });
