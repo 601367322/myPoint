@@ -75,6 +75,21 @@ EatMemberGroupSchema.statics.findAllEnable = function () {
     })
 };
 
+EatMemberGroupSchema.statics.findAll = function () {
+    this.find({})
+        .populate(['jia', 'yi'])
+        .exec(function (err, doc) {
+            for (var i = 0; i < doc.length; i++) {
+                if (i % 2 == 0) {
+                    if (i % 12 == 0) {
+                        console.log("=======================")
+                    }
+                    console.log(doc[i].jia.nickname + "----" + doc[i].yi.nickname);
+                }
+            }
+        });
+};
+
 EatMemberGroupSchema.statics.findAllEnableAndToday = function () {
     var self = this;
     return new Promise(function (res, rej) {

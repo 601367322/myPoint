@@ -57,12 +57,32 @@ class EatMemberGroupService {
                                             randomUsers.push(users[index]);
                                             users.splice(index, 1);
                                         }
+
+                                        var groups = new Array();
+
+                                        /**作弊开始**/
+                                        // var me = null;
+                                        // var she = null;
+                                        // randomUsers.forEach(function (user) {
+                                        //     if (user.mobile == "13488616135") {
+                                        //         me = user;
+                                        //     } else if (user.mobile == "18510093194") {
+                                        //         she = user;
+                                        //     }
+                                        // });
+                                        // if (me != null && she != null) {
+                                        //     groups.push(new EatMemberGroupSchema({jia: me._id, yi: she._id}));
+                                        //     groups.push(new EatMemberGroupSchema({jia: she._id, yi: me._id}));
+                                        //     self.removeByValue(randomUsers, me);
+                                        //     self.removeByValue(randomUsers, she);
+                                        // }
+                                        /**作弊结束**/
+
                                         //去掉最后一个单身狗
                                         if (randomUsers.length % 2 != 0) {
                                             randomUsers.pop();
                                         }
 
-                                        var groups = new Array();
                                         self.doPair(groups, randomUsers, res, rej);
                                     })
                             });
@@ -204,6 +224,10 @@ class EatMemberGroupService {
                     }
                 })
         });
+    }
+
+    test() {
+        EatMemberGroupSchema.findAll();
     }
 }
 
