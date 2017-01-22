@@ -32,11 +32,11 @@ class EatMemberGroupService {
     generateGroups() {
         var self = this;
         return new Promise(function (res, rej) {
-            // EatMemberGroupSchema.findAllEnableAndToday()
-            //     .then(function (result) {
-            //         if (result.length > 0) {
-            //             res(result);
-            //         } else {
+            EatMemberGroupSchema.findAllEnableAndToday()
+                .then(function (result) {
+                    if (result.length > 0) {
+                        res(result);
+                    } else {
                         EatMemberGroupSchema.incapableAll()
                             .then(function () {
                                 EatMemberSchema.findAll()
@@ -68,8 +68,8 @@ class EatMemberGroupService {
                                         self.doPair(groups, randomUsers, res, rej);
                                     })
                             });
-                    // }
-                // });
+                    }
+                });
         });
     }
 
