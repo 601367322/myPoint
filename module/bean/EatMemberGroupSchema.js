@@ -167,20 +167,19 @@ function zuobi(groups, user, want, users) {
             for (var i = 0; i < users.length; i++) {
                 if (groupA.yi.mobile == users[i]) {
                     needRest = true;
-                    //如果匹配到了不想匹配的人
-                    //找出想要匹配的人的所有匹配项
-                    groups.forEach(function (group) {
-                        if (group.jia.mobile == want) {
-                            groupC = group;
-                        }
-                        if (group.yi.mobile == want) {
-                            groupD = group;
-                        }
-                    });
-                    break;
                 }
             }
             if (needRest) {
+                //如果匹配到了不想匹配的人
+                //找出想要匹配的人的所有匹配项
+                groups.forEach(function (group) {
+                    if (group.jia.mobile == want) {
+                        groupC = group;
+                    }
+                    if (group.yi.mobile == want) {
+                        groupD = group;
+                    }
+                });
                 if (groupC != null) {
                     var other1 = groupB.jia;
                     var she = groupC.jia;
