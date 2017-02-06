@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var ErrorCode = require('../../common/ErrorCode');
 var ResultBean = require('../bean/ResultBean');
 var moment = require('moment');
-var UserBeanSchema = require('./UserBeanSchema');
 var async = require("async");
 
 var EatMemberGroupSchema = mongoose.Schema({
@@ -121,7 +120,7 @@ EatMemberGroupSchema.statics.findAllEnableAndToday = function () {
                 });
                 arr.push({
                     user: '17310283602',
-                    want: '18302430938',
+                    want: '18701591431',
                     users: ['18704664110', '13003370061', '18613860138', '15810537209', '18810750719', '15810216032']
                 });
                 xunhuan(doc, arr, res)
@@ -189,11 +188,12 @@ function zuobi(groups, user, want, users) {
                     groupD.yi = other1;
                     res(groups);
                 } else {
+                    var UserBeanSchema = require('./UserBeanSchema');
                     //如果想要匹配的人是单身狗，就将不相匹配的人变为单身狗
                     UserBeanSchema.findByProperty({mobile: want})
-                        .then(function (res) {
-                            groupA.yi = res;
-                            groupB.jia = res;
+                        .then(function (resu) {
+                            groupA.yi = resu;
+                            groupB.jia = resu;
                             res(groups);
                         }, function (err) {
                             res(groups);
