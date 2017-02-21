@@ -51,6 +51,15 @@ router.get('/generate', function (req, res) {
     }
 });
 
+router.get('/delete', function (req, res) {
+    eatMemberGroupService.deleteTodayGroups()
+        .then(function (data) {
+            res.send(data);
+        }, function (err) {
+
+        })
+});
+
 router.get('/test', function (req, res) {
     eatMemberGroupService.test();
     res.send("ok");

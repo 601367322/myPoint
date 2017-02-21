@@ -11,9 +11,28 @@ block head
 block nav_menu
     ul(id="nav-mobile" class="right")
         li
-            a(href="javascript:void(0);" class="copy_btn" data-clipboard-text=copy_str) 复制配对信息
-            script.
-                new Clipboard('.copy_btn')
+            a(class="dropdown-button" href="#!" data-activates="dropdown1") 更多操作
+            ul(id="dropdown1" class="dropdown-content")
+                li
+                    a(href="javascript:void(0);" class="copy_btn" data-clipboard-text=copy_str) 复制配对信息
+                    script.
+                        new Clipboard('.copy_btn')
+                li
+                    a(href="javascript:deleteTodayGroups();" style="color:red;") 删除今日配对
+                    script.
+                        function deleteTodayGroups() {
+                            $.ajax({
+                                url: '/eatmanage/delete',
+                                type: 'get',
+                                async: true,
+                                success: function (data) {
+                                    if (confirm("删除成功！")) {
+                                        window.location.href = "/users";
+                                        return;
+                                    }
+                                },
+                            })
+                        }
 block content
     div(class="row")
         ul(class="collection" style="margin:0")

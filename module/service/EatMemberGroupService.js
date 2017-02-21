@@ -208,6 +208,15 @@ class EatMemberGroupService {
         });
     }
 
+    deleteTodayGroups() {
+        return new Promise(function (res, rej) {
+            EatMemberGroupSchema.removeTodayGroups()
+                .then(function (doc) {
+                    res(new ResultBean(ErrorCode.SUCCESS, ""));
+                })
+        });
+    }
+
     test() {
         EatMemberGroupSchema.findAll();
     }

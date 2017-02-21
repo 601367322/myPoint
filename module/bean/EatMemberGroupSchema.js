@@ -137,6 +137,16 @@ EatMemberGroupSchema.statics.removeAllByUserId = function (userId) {
     });
 };
 
+EatMemberGroupSchema.statics.removeTodayGroups = function () {
+    var self = this;
+    return new Promise(function (res, rej) {
+        self.remove({"state": "0"}, function (err, result) {
+            res(result);
+        })
+    })
+};
+
+
 function xunhuan(doc, arr, res) {
     zuobi(doc, arr[0].user, arr[0].want, arr[0].users)
         .then(function (groups) {
