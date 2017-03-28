@@ -115,7 +115,7 @@ EatMemberGroupSchema.statics.findAllEnableAndToday = function () {
                 var arr = new Array();
                 arr.push({
                     user: '13488616135',//自己
-                    want: '18510093194',//相匹配的人
+                    want: '17319306511',//相匹配的人
                     users: ['18704664110', '13003370061', '18613860138', '15810537209', '18810750719', '15810216032']//不相匹配的人
                 });
                 arr.push({
