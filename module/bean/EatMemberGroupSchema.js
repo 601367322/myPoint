@@ -121,7 +121,7 @@ EatMemberGroupSchema.statics.findAllEnableAndToday = function () {
                 arr.push({
                     user: '17310283602',
                     want: '18701591431',
-                    users: ['18704664110', '13003370061', '18613860138', '15810537209', '18810750719', '15810216032']
+                    users: ['13003370061']
                 });
                 xunhuan(doc, arr, res)
             })

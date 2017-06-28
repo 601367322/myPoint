@@ -1,0 +1,152 @@
+extends ../layout
+
+block head
+    - var title = "猜猜我是谁"
+    link(href='/stylesheets/random.css' rel="stylesheet")
+block content
+    div(class="mainContent")
+        div(class="leftContent")
+            div(class="mCell")
+            div(class="mCell")
+                if data != null
+                    each item,position in data
+                        div(id='div' + position class=position > 0 ? "hide people" : "people")
+                            img(src=item.avatar class="circle avatar")
+                            p #{item.nickname}
+                div(class="row")
+                    a(class="waves-effect waves-light btn" id="randomBtn") 抽取幸运人儿
+                div(class="row")
+                    span 总时长：
+                    input(type="input" id="second" class="second" value="10")
+                    span 秒
+                div(class="row")
+                    a(class="waves-effect waves-light btn disabled" id="startTimerBtn") 开始认脸
+                div(class="row")
+                    a(class="waves-effect waves-light btn rightBtn disabled" id="rightBtn") 正确
+                    a(class="waves-effect waves-light btn failBtn red disabled" id="failBtn") 错误
+                div(class="row")
+                    p 正确/错误数量：
+                        span(id="rightNumber" style="color:green") 0
+                        span /
+                        span(id="failNumber" style="color:red") 0
+                    p 总数量/正确率：
+                        span(id="allNumber") 0
+                        span /
+                        span(id="rateNumber") 0%
+                script.
+                    var interval = undefined;
+
+                    $("#randomBtn").click(function () {
+                        if (!interval) {
+                            interval = setInterval(randomPeople, 100)
+                            $(this).text("停");
+                        } else {
+                            clearInterval(interval)
+                            interval = undefined;
+                            $(this).text("抽取幸运人儿");
+                            $(this).addClass("disabled");
+                            $("#second").removeAttr("disabled");
+                            $("#startTimerBtn").removeClass("disabled");
+                            $("#rightBtn").removeClass("disabled");
+                            $("#failBtn").removeClass("disabled");
+                        }
+                    });
+
+                    var showDiv = $("#div0");
+
+                    function randomPeople() {
+                        var randomIndex = getRandomIndex();
+                        var div = $("#div" + randomIndex);
+
+                        showDiv.addClass("hide");
+
+                        if (div.hasClass("hide")) {
+                            div.removeClass("hide");
+                        }
+                        showDiv = div;
+                    }
+
+                    function getRandomIndex() {
+                        var randomIndex = parseInt(Math.random() * #{data.length});
+                        if (randomIndex == 0) {
+                            return getRandomIndex();
+                        }
+                        return randomIndex;
+                    }
+
+
+                    var countDownInterval
+                    var countDownTime = 0;
+
+                    $("#startTimerBtn").click(function () {
+                        $(this).addClass("disabled")
+                        $("#second").attr("disabled", "disabled")
+                        var maxTime = parseInt($("#second").val());
+                        countDownInterval = setInterval(function () {
+                            countDownTime++;
+                            if (countDownTime == maxTime) {
+                                $("#rightBtn").addClass("disabled")
+                                $("#failBtn").addClass("disabled")
+                                clearInterval(countDownInterval)
+                                $("#startTimerBtn").text("时间到");
+                                return;
+                            }
+                            $("#startTimerBtn").text("剩余" + (maxTime - countDownTime) + "秒");
+                        }, 1000);
+
+                        randomPicture();
+                    });
+            div(class="mCell")
+        div(class="rightContent")
+            div(class="mCell")
+            div(class="mCell")
+                if pictures != null
+                    each item,position in pictures
+                        img(src=item.path class="hide picture")
+                script.
+                    var showPicture;
+                    var randomIndexArr = [];
+                    function randomPicture() {
+                        if (showPicture) {
+                            if (!showPicture.hasClass("hide"))
+                                $(showPicture).addClass("hide");
+                        }
+                        var pictures = $(".picture");
+                        var randomIndex = getRandomPictureIndex();
+                        var mPic = $(pictures[randomIndex]);
+                        if (mPic.hasClass("hide"))
+                            mPic.removeClass("hide");
+                        showPicture = mPic;
+                    }
+
+                    function getRandomPictureIndex() {
+                        var pictures = $(".picture");
+                        var randomIndex = parseInt(Math.random() * pictures.length);
+                        if ($.inArray(randomIndex, randomIndexArr) != -1) {
+                            return getRandomPictureIndex();
+                        }
+                        randomIndexArr.push(randomIndex);
+                        return randomIndex;
+                    }
+
+                    $("#rightBtn").click(function () {
+                        var num = parseInt($("#rightNumber").text());
+                        $("#rightNumber").text("" + (num + 1));
+                        calculateAllNumber();
+                        randomPicture();
+                    });
+
+                    $("#failBtn").click(function () {
+                        var num = parseInt($("#failNumber").text());
+                        $("#failNumber").text("" + (num + 1))
+                        calculateAllNumber();
+                        randomPicture();
+                    });
+
+                    function calculateAllNumber() {
+                        var num1 = parseInt($("#rightNumber").text());
+                        var num2 = parseInt($("#failNumber").text());
+                        $("#allNumber").text((num1 + num2));
+                        $("#rateNumber").text(parseInt(num1 / (num1 + num2) * 100) + "%");
+                    }
+            div(class="mCell")

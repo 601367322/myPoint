@@ -4,7 +4,8 @@ module.exports = function (req, res, next) {
     var url = req.originalUrl;
     if (url != "/users/login" &&
         url != "/users/register" &&
-        url != "/users/exit" && !req.session.user) {
+        url != "/users/exit" &&
+        url != "/active/random" && !req.session.user) {
         if (req.cookies.accessToken && req.cookies.accessToken != "undefined") {
             UserModel.findByProperty({accessToken: req.cookies.accessToken})
                 .then(function (result) {

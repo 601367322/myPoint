@@ -13,6 +13,7 @@ var users = require('./routes/users');
 var group = require('./routes/group');
 var eat = require('./routes/eat');
 var manage = require('./routes/eatmanage');
+var active = require('./routes/active');
 
 var app = express();
 
@@ -47,6 +48,7 @@ app.use('/users', users);
 app.use('/group', group);
 app.use('/eat', eat);
 app.use('/eatmanage', manage);
+app.use('/active', active);
 
 
 // catch 404 and forward to error handler
