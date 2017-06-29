@@ -89,6 +89,21 @@ block content
                                 $("#failBtn").addClass("disabled")
                                 clearInterval(countDownInterval)
                                 $("#startTimerBtn").text("时间到");
+
+                                $("#rightPictures").html("");
+
+
+                                rightArr.forEach(function (item) {
+                                    $("#rightPictures").append(
+                                        '<div class="small_picture_green"><img src="' + item + '"/></div>'
+                                    );
+                                })
+
+                                failArr.forEach(function (item) {
+                                    $("#rightPictures").append(
+                                        '<div class="small_picture_red"><img src="' + item + '"/></div>'
+                                    );
+                                })
                                 return;
                             }
                             $("#startTimerBtn").text("剩余" + (maxTime - countDownTime) + "秒");
@@ -99,54 +114,64 @@ block content
             div(class="mCell")
         div(class="rightContent")
             div(class="mCell")
-            div(class="mCell")
+            div(class="mCell" id="rightPictures")
                 if pictures != null
                     each item,position in pictures
                         img(src=item.path class="hide picture")
-                script.
-                    var showPicture;
-                    var randomIndexArr = [];
-                    function randomPicture() {
-                        if (showPicture) {
-                            if (!showPicture.hasClass("hide"))
-                                $(showPicture).addClass("hide");
-                        }
-                        var pictures = $(".picture");
-                        var randomIndex = getRandomPictureIndex();
-                        var mPic = $(pictures[randomIndex]);
-                        if (mPic.hasClass("hide"))
-                            mPic.removeClass("hide");
-                        showPicture = mPic;
-                    }
-
-                    function getRandomPictureIndex() {
-                        var pictures = $(".picture");
-                        var randomIndex = parseInt(Math.random() * pictures.length);
-                        if ($.inArray(randomIndex, randomIndexArr) != -1) {
-                            return getRandomPictureIndex();
-                        }
-                        randomIndexArr.push(randomIndex);
-                        return randomIndex;
-                    }
-
-                    $("#rightBtn").click(function () {
-                        var num = parseInt($("#rightNumber").text());
-                        $("#rightNumber").text("" + (num + 1));
-                        calculateAllNumber();
-                        randomPicture();
-                    });
-
-                    $("#failBtn").click(function () {
-                        var num = parseInt($("#failNumber").text());
-                        $("#failNumber").text("" + (num + 1))
-                        calculateAllNumber();
-                        randomPicture();
-                    });
-
-                    function calculateAllNumber() {
-                        var num1 = parseInt($("#rightNumber").text());
-                        var num2 = parseInt($("#failNumber").text());
-                        $("#allNumber").text((num1 + num2));
-                        $("#rateNumber").text(parseInt(num1 / (num1 + num2) * 100) + "%");
-                    }
             div(class="mCell")
+            script.
+                var showPicture;
+                var randomIndexArr = [];
+
+                var rightArr = [];
+                var failArr = [];
+
+                function randomPicture() {
+                    if (showPicture) {
+                        if (!showPicture.hasClass("hide"))
+                            $(showPicture).addClass("hide");
+                    }
+                    var pictures = $(".picture");
+                    var randomIndex = getRandomPictureIndex();
+                    var mPic = $(pictures[randomIndex]);
+                    if (mPic.hasClass("hide"))
+                        mPic.removeClass("hide");
+                    showPicture = mPic;
+                }
+
+                function getRandomPictureIndex() {
+                    var pictures = $(".picture");
+                    var randomIndex = parseInt(Math.random() * pictures.length);
+                    if ($.inArray(randomIndex, randomIndexArr) != -1) {
+                        return getRandomPictureIndex();
+                    }
+                    randomIndexArr.push(randomIndex);
+                    return randomIndex;
+                }
+
+                $("#rightBtn").click(function () {
+                    var num = parseInt($("#rightNumber").text());
+                    $("#rightNumber").text("" + (num + 1));
+                    calculateAllNumber();
+
+                    rightArr.push($(showPicture).attr("src"));
+
+                    randomPicture();
+                });
+
+                $("#failBtn").click(function () {
+                    var num = parseInt($("#failNumber").text());
+                    $("#failNumber").text("" + (num + 1))
+                    calculateAllNumber();
+
+                    failArr.push($(showPicture).attr("src"));
+
+                    randomPicture();
+                });
+
+                function calculateAllNumber() {
+                    var num1 = parseInt($("#rightNumber").text());
+                    var num2 = parseInt($("#failNumber").text());
+                    $("#allNumber").text((num1 + num2));
+                    $("#rateNumber").text(parseInt(num1 / (num1 + num2) * 100) + "%");
+                }
