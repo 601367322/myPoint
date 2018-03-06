@@ -19,6 +19,14 @@ block content
                 return false;
             }
         }
+        function registerHandler(bridge) {
+
+            setTimeout(function () {
+                AppWebViewBridge.callHandler("callback", "呵呵", function (data) {
+                    alert(data);
+                });
+            },10)
+        }
     div(class="row top_margin")
         form(action="/users/login" method="post" onsubmit="return checkForm(this);")
             div(class="input-field col s12")
@@ -35,7 +43,10 @@ block content
                     button(class="btn-large waves-effect waves-light" id="regBtn") 注册
                     script.
                         $("#regBtn").click(function () {
-                            window.location.href = "/users/register";
+                            //window.location.href = "/users/register";
+                            AppWebViewBridge.callHandler("callback","呵呵",function (data) {
+                                alert(data);
+                            })
                             return false;
                         });
-
+    script(src='/javascripts/Android_ios_Connect_Js_WebviewBridge.js')

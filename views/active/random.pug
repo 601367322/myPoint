@@ -68,9 +68,11 @@ block content
 
                     function getRandomIndex() {
                         var randomIndex = parseInt(Math.random() * #{data.length});
-                        if (randomIndex == 0) {
-                            return getRandomIndex();
-                        }
+
+                        //作为价值观标兵，我不能做出这种事
+                        //if (randomIndex === 0 || randomIndex === 9 || randomIndex === 36) {
+                        //    return getRandomIndex();
+                        //}
                         return randomIndex;
                     }
 
@@ -175,3 +177,21 @@ block content
                     $("#allNumber").text((num1 + num2));
                     $("#rateNumber").text(parseInt(num1 / (num1 + num2) * 100) + "%");
                 }
+
+                document.onkeydown = function (event) {
+                    if (!$("#randomBtn").hasClass("disabled")) {
+                        return;
+                    }
+                    var e = event || window.event || arguments.callee.caller.arguments[0];
+                    if (e && e.keyCode == 37) { // 左
+                        $("#rightBtn").click();
+                    }
+                    if (e && e.keyCode == 39) { // 右
+                        $("#failBtn").click();
+                    }
+                    if (e && e.keyCode == 32) { // 空格
+                        if (!$("#startTimerBtn").hasClass("disabled")) {
+                            $("#startTimerBtn").click();
+                        }
+                    }
+                };

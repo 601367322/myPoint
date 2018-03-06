@@ -1,6 +1,9 @@
 var UserModel = require('../bean/UserBeanSchema');
 
 module.exports = function (req, res, next) {
+    console.log("Processing request for: ", req.url)
+    console.log("Custom Header: ", req.headers)
+    console.log("Request Processed\n")
     var url = req.originalUrl;
     if (url != "/users/login" &&
         url != "/users/register" &&

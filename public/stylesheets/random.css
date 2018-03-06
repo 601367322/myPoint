@@ -43,8 +43,6 @@
 .small_picture_red, .small_picture_green {
     width: 84px;
     height: 84px;
-    display: flex;
-    justify-content: center;
     position: relative;
     float: left;
     margin-right: 10px;

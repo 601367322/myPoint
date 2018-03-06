@@ -12,6 +12,9 @@ var sharp = require("sharp");
  * 用户主页
  */
 router.get('/', function (req, res, next) {
+    console.log("Processing request for: ", req.url)
+    console.log("Custom Header: ", req.headers)
+    console.log("Request Processed\n")
     res.render('user/user');
 });
 
@@ -19,6 +22,9 @@ router.get('/', function (req, res, next) {
  * 登录
  */
 router.post('/login', function (req, res, next) {
+    console.log("Processing request for: ", req.url)
+    console.log("Custom Header: ", req.headers)
+    console.log("Request Processed\n")
     let mobile = req.body.mobile;
     userService.loginUser({mobile: mobile, password: req.body.password})
         .then(function (result) {
@@ -32,6 +38,9 @@ router.post('/login', function (req, res, next) {
  * 注册页跳转
  */
 router.get('/register', function (req, res, next) {
+    console.log("Processing request for: ", req.url)
+    console.log("Custom Header: ", req.headers)
+    console.log("Request Processed\n")
     res.render('user/register');
 });
 
