@@ -7,14 +7,12 @@ var multer = require('multer');
 var fs = require("fs");
 var ResultBean = require('../module/bean/ResultBean');
 var sharp = require("sharp");
+var upload = multer({dest: 'uploads/file'});
 
 /**
  * 用户主页
  */
 router.get('/', function (req, res, next) {
-    console.log("Processing request for: ", req.url)
-    console.log("Custom Header: ", req.headers)
-    console.log("Request Processed\n")
     res.render('user/user');
 });
 
@@ -22,9 +20,6 @@ router.get('/', function (req, res, next) {
  * 登录
  */
 router.post('/login', function (req, res, next) {
-    console.log("Processing request for: ", req.url)
-    console.log("Custom Header: ", req.headers)
-    console.log("Request Processed\n")
     let mobile = req.body.mobile;
     userService.loginUser({mobile: mobile, password: req.body.password})
         .then(function (result) {
@@ -38,16 +33,48 @@ router.post('/login', function (req, res, next) {
  * 注册页跳转
  */
 router.get('/register', function (req, res, next) {
-    console.log("Processing request for: ", req.url)
-    console.log("Custom Header: ", req.headers)
-    console.log("Request Processed\n")
     res.render('user/register');
+});
+
+/**
+ * 批量注册
+ */
+router.get('/registerAll', function (req, res, next) {
+    res.render('user/register_all');
+});
+/**
+ * 批量注册
+ */
+var xlsx = require('node-xlsx');
+router.post('/registerAll', upload.single("users"), function (req, res, next) {
+    var obj = xlsx.parse(req.file.path);
+    var excelObj = obj[0].data;
+
+    let num = 0;
+
+    for (let i = 0; i < excelObj.length; i++) {
+        let row = excelObj[i];
+        let name = row[0];
+        let phone = row[1];
+
+        userService.regUser({
+            mobile: phone,
+            password: "123456",
+            nickname: name,
+            avatar: "/uploads/avatar/common.png"
+        }).then(function (result) {
+            num++;
+        }, function (error) {
+
+        });
+    }
+
+    res.render('user/user');
 });
 
 /**
  * 注册
  */
-var upload = multer({dest: 'uploads/avatar'});
 router.post('/register', upload.single('avatar'), function (req, res, next) {
     sharp(req.file.path)
         .rotate()

@@ -1,0 +1,40 @@
+extends ../layout
+
+block head
+    - title = "批量注册"
+    link(rel="stylesheet" href="/stylesheets/login.css")
+block nav_menu
+block content
+    div(class="row top_margin")
+        script.
+            function checkForm(form) {
+                if (form.mobile.value == "") {
+                    Materialize.toast("请输入手机号", 3000, "errorToast");
+                    form.mobile.focus();
+                    return false;
+                }
+                if (form.password.value == "") {
+                    Materialize.toast("请输入密码", 3000, "errorToast");
+                    form.password.focus();
+                    return false;
+                }
+                if (form.nickname.value == "") {
+                    Materialize.toast("请输入昵称", 3000, "errorToast");
+                    form.nickname.focus();
+                    return false;
+                }
+                if (form.avatar.value == "") {
+                    Materialize.toast("请选择头像", 3000, "errorToast");
+                    form.avatar.focus();
+                    return false;
+                }
+            }
+        form(action="/users/registerAll" method="post" enctype="multipart/form-data" onsubmit="return checkForm(this)")
+            div(class="file-field input-field col s12")
+                div(class="btn")
+                    span 请上传Excel
+                    input(type="file" name="users" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" capture)
+                div(class="file-path-wrapper")
+                    input(class="file-path validate" type="text")
+            div(class="col s12")
+                button(class="btn-large waves-effect waves-light" type="submit" id="loginBtn") 提交
