@@ -1,4 +1,5 @@
 var UserModel = require('../bean/UserBeanSchema');
+var ThankGavingMember = require('../bean/ThankGavingMemberSchema');
 var ErrorCode = require('../../common/ErrorCode');
 var ResultBean = require('../bean/ResultBean');
 var helpers = require("request/lib/helpers");
@@ -29,6 +30,7 @@ class UserService {
                     //添加到数据库
                     UserModel.insertUser(user)
                         .then(function (doc) {
+                            new ThankGavingMember({user:doc._id}).save();
                             resolve(new ResultBean(ErrorCode.SUCCESS, doc));
                         });
                 });

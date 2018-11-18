@@ -6,29 +6,6 @@ block head
 block nav_menu
 block content
     div(class="row top_margin")
-        script.
-            function checkForm(form) {
-                if (form.mobile.value == "") {
-                    Materialize.toast("请输入手机号", 3000, "errorToast");
-                    form.mobile.focus();
-                    return false;
-                }
-                if (form.password.value == "") {
-                    Materialize.toast("请输入密码", 3000, "errorToast");
-                    form.password.focus();
-                    return false;
-                }
-                if (form.nickname.value == "") {
-                    Materialize.toast("请输入昵称", 3000, "errorToast");
-                    form.nickname.focus();
-                    return false;
-                }
-                if (form.avatar.value == "") {
-                    Materialize.toast("请选择头像", 3000, "errorToast");
-                    form.avatar.focus();
-                    return false;
-                }
-            }
         form(action="/users/registerAll" method="post" enctype="multipart/form-data" onsubmit="return checkForm(this)")
             div(class="file-field input-field col s12")
                 div(class="btn")

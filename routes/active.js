@@ -6,6 +6,9 @@ var router = express.Router();
 var ActiveService = require('../module/service/ActiveService');
 var activeService = new ActiveService();
 var fs = require('fs');
+var ThanksGavingService = require('../module/service/ThanksGavingService');
+var mThanksGavingService = new ThanksGavingService();
+var UserSchema = require('../module/bean/UserBeanSchema')
 
 function geFileList(path) {
     var filesList = [];
@@ -16,6 +19,7 @@ function geFileList(path) {
 function readFile(path, filesList) {
     var files = fs.readdirSync(path);//需要用到同步读取
     files.forEach(walk);
+
     function walk(file) {
         var states = fs.statSync(path + '/' + file);
         if (states.isDirectory()) {
@@ -39,6 +43,29 @@ router.get('/random', function (req, res) {
         .then(function (data) {
             res.render('active/random', {data, pictures});
         });
+});
+
+router.get('/thanksgiving', function (req, res) {
+    mThanksGavingService.find(req.session.user, (result) => {
+        if (result == null) {
+            UserSchema.findAll()
+                .then((users) => {
+                    res.render('active/thanksgaving', {users});
+                })
+        } else {
+            res.render('active/thanksgaving', {result});
+        }
+    }, () => {
+        res.send("error");
+    })
+});
+
+router.get('/thanksgivingdorandom', function (req, res) {
+    mThanksGavingService.random(req.session.user, (result) => {
+        res.send(result.user);
+    }, () => {
+        res.send("error")
+    })
 });
 
 

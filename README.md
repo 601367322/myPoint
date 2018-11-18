@@ -5,3 +5,5 @@
 再启动服务
 ===
 > supervisor bin/www
+
+ systemctl start mongod

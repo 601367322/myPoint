@@ -57,19 +57,23 @@ router.post('/registerAll', upload.single("users"), function (req, res, next) {
         let name = row[0];
         let phone = row[1];
 
-        userService.regUser({
-            mobile: phone,
-            password: "123456",
-            nickname: name,
-            avatar: "/uploads/avatar/common.png"
-        }).then(function (result) {
-            num++;
-        }, function (error) {
+        console.log(JSON.stringify(row));
 
-        });
+        if (phone) {
+            userService.regUser({
+                mobile: phone,
+                password: "123456",
+                nickname: name,
+                avatar: "/uploads/avatar/common.png"
+            }).then(function (result) {
+                console.log("注册成功" + JSON.stringify(result))
+            }, function (error) {
+                console.log("注册失败" + JSON.stringify(error))
+            });
+        }
     }
 
-    res.render('user/user');
+    res.redirect('/');
 });
 
 /**

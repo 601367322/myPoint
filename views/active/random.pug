@@ -11,7 +11,7 @@ block content
                 if data != null
                     each item,position in data
                         div(id='div' + position class=position > 0 ? "hide people" : "people")
-                            img(src=item.avatar class="circle avatar")
+                            img(src=item.avatar class="circle avatar" style="height:100px;width:100px")
                             p #{item.nickname}
                 div(class="row")
                     a(class="waves-effect waves-light btn" id="randomBtn") 抽取幸运人儿

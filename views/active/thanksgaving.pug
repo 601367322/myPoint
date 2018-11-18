@@ -1,0 +1,89 @@
+extends ../layout
+
+block head
+    - var title = "感恩节"
+    link(href='/stylesheets/random.css' rel="stylesheet")
+block content
+    div(class="mainContent")
+        div(class="leftContent")
+            div(class="mCell")
+            div(class="mCell")
+                if result != null
+                    if result.user != null
+                        div(class="row")
+                            p(class="center") 您的小可爱是
+                        div(class="row center")
+                            h1 #{result.user.nickname}
+                    else
+                        div(class="row")
+                            p(class="center") 您没有小可爱
+                else
+                    div(class="row")
+                        p(class="center") 正在为您随机寻找小可爱
+                    div(class="row center")
+                        each item,position in users
+                            h1(id="nickname" + position class=position > 0 ? "hide" : "" name=item.nickname) #{item.nickname}
+                    script.
+                        var interval = undefined;
+
+                        if (!interval) {
+                            interval = setInterval(randomPeople, 100)
+                        }
+
+                        var showDiv = $("#nickname0")
+
+                        function randomPeople() {
+                            var randomIndex = getRandomIndex();
+                            var div = $("#nickname" + randomIndex);
+
+                            showDiv.addClass("hide");
+
+                            if (div.hasClass("hide")) {
+                                div.removeClass("hide");
+                            }
+                            showDiv = div;
+                        }
+
+                        function getRandomIndex() {
+                            var randomIndex = parseInt(Math.random() * #{users.length});
+                            return randomIndex;
+                        }
+
+                        $.ajax({
+                            url: '/active/thanksgivingdorandom',
+                            type: 'get',
+                            async: true,
+                            success: function (data) {
+                                setTimeout(function () {
+                                    clearInterval(interval);
+                                    showDiv.addClass("hide");
+                                    $("h1[name='" + data.nickname + "']").removeClass("hide");
+                                    if (data != null) {
+                                        setTimeout(function () {
+                                            alert("您的小可爱是：" + data.nickname)
+                                            location.reload();
+                                        }, 100)
+                                    }else {
+                                        setTimeout(function () {
+                                            alert("您可能是最后一个被剩下的人，所以没有小可爱")
+                                            location.reload();
+                                        }, 100)
+                                    }
+                                }, 5000)
+
+                            },
+                        })
+            div(class="mCell")
+
+
+
+
+
+
+
+
+
+
+
+
+

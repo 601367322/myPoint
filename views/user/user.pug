@@ -10,24 +10,27 @@ block content
         div(class="center row")
             p 您好#{user.nickname}，欢迎来到腾跃
             img(src=user.avatar class="circle avatar")
+        //div(class="row col s12")
+        //    a(class="waves-effect waves-light btn-large col s12" href="/eat")
+        //        | 今天跟谁一起吃 💖
+        //if user.level > 0
+        //    div(class="row col s12")
+        //        button(class="btn-large waves-effect waves-light col s12" id="manage") 管理成员
+        //        script.
+        //            $("#manage").click(function () {
+        //                window.location.href = "/eatmanage";
+        //                return false;
+        //            });
+        //    div(class="row col s12")
+        //        button(class="btn-large waves-effect waves-light col s12" id="generate_eat") 今日配对列表
+        //        script.
+        //            $("#generate_eat").click(function () {
+        //                window.location.href = "/eatmanage/generate";
+        //                return false;
+        //            });
         div(class="row col s12")
-            a(class="waves-effect waves-light btn-large col s12" href="/eat")
-                | 今天跟谁一起吃 💖
-        if user.level > 0
-            div(class="row col s12")
-                button(class="btn-large waves-effect waves-light col s12" id="manage") 管理成员
-                script.
-                    $("#manage").click(function () {
-                        window.location.href = "/eatmanage";
-                        return false;
-                    });
-            div(class="row col s12")
-                button(class="btn-large waves-effect waves-light col s12" id="generate_eat") 今日配对列表
-                script.
-                    $("#generate_eat").click(function () {
-                        window.location.href = "/eatmanage/generate";
-                        return false;
-                    });
+            a(class="waves-effect waves-light btn-large col s12" href="/active/thanksgiving")
+                | 感恩节🕯抽取小可爱😊
         div(class="row col s12")
             button(class="btn-large waves-effect waves-light red col s12" id="exitBtn") 退出
             script.
